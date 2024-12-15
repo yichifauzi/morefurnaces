@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#F#",
+    "#S#"
+  ],
+  "key": {
+    "#": "minecraft:gold_ingot",
+    "S": "minecraft:gold_block",
+    "F": "morefurnaces:iron_furnace"
+  },
+  "result": {
+    "id": "morefurnaces:gold_furnace",
+    "count": 1
+  }
+}

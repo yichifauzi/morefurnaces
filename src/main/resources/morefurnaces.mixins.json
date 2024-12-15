@@ -1,0 +1,10 @@
+{
+  "required": true,
+  "package": "pw.smto.morefurnaces.mixin",
+  "compatibilityLevel": "JAVA_21",
+  "mixins": [
+  ],
+  "injectors": {
+    "defaultRequire": 1
+	}
+}

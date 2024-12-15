@@ -1,0 +1,32 @@
+{
+	"schemaVersion": 1,
+	"id": "morefurnaces",
+	"version": "${version}",
+	"name": "More Furnaces (Polymer)",
+	"description": "Adds more furnaces while staying server-side using Polymer!",
+	"authors": [
+		"JongWasTaken"
+	],
+	"contact": {
+		"homepage": "https://github.com/JongWasTaken/morefurnaces",
+		"sources": "https://github.com/JongWasTaken/morefurnaces"
+	},
+	"license": "MIT",
+	"icon": "icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+          "pw.smto.morefurnaces.MoreFurnaces"
+		]
+	},
+	"mixins": [
+      "morefurnaces.mixins.json"
+	],
+	"accessWidener" : "morefurnaces.accesswidener",
+	"depends": {
+		"fabricloader": ">=${loader_version}",
+		"minecraft": "~${minecraft_version}",
+		"java": ">=21",
+		"fabric-api": ">=${fabric_version}"
+	}
+}

@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#F#",
+    "#S#"
+  ],
+  "key": {
+    "#": "minecraft:iron_ingot",
+    "S": "minecraft:iron_block",
+    "F": "minecraft:blast_furnace"
+  },
+  "result": {
+    "id": "morefurnaces:iron_furnace",
+    "count": 1
+  }
+}

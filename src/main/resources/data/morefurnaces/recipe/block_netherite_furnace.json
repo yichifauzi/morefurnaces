@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "X#X",
+    "#F#",
+    "XSX"
+  ],
+  "key": {
+    "X": "minecraft:netherite_ingot",
+    "#": "minecraft:magma_cream",
+    "S": "#minecraft:soul_fire_base_blocks",
+    "F": "morefurnaces:diamond_furnace"
+  },
+  "result": {
+    "id": "morefurnaces:netherite_furnace",
+    "count": 1
+  }
+}

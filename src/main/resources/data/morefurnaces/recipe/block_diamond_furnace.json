@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "###",
+    "#F#",
+    "#S#"
+  ],
+  "key": {
+    "#": "minecraft:diamond",
+    "S": "minecraft:diamond_block",
+    "F": "morefurnaces:gold_furnace"
+  },
+  "result": {
+    "id": "morefurnaces:diamond_furnace",
+    "count": 1
+  }
+}

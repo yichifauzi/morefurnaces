@@ -1,0 +1,9 @@
+{
+    "replace": false,
+    "values": [
+        "morefurnaces:iron_furnace",
+        "morefurnaces:gold_furnace",
+        "morefurnaces:diamond_furnace",
+        "morefurnaces:netherite_furnace"
+    ]
+}
