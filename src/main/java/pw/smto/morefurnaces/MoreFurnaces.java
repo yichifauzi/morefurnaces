@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import pw.smto.morefurnaces.api.MoreFurnacesContent;
 import pw.smto.morefurnaces.block.CustomFurnaceBlock;
 import pw.smto.morefurnaces.block.CustomFurnaceBlockEntity;
+import pw.smto.morefurnaces.item.FurnaceModuleItem;
 import pw.smto.morefurnaces.item.GenericBlockItem;
 
 import java.lang.reflect.Field;
@@ -42,24 +43,24 @@ public class MoreFurnaces implements ModInitializer {
 					Registry.register(Registries.BLOCK, block.getIdentifier(), (Block)block);
 				}
 			} catch (Throwable ignored) {
-				LOGGER.error("Failed to register block: {}", field.getName());
+                MoreFurnaces.LOGGER.error("Failed to register block: {}", field.getName());
 			}
 		}
 
 		for (Field field : BlockEntities.class.getFields()) {
 			try {
-				Registry.register(Registries.BLOCK_ENTITY_TYPE, id(field.getName().toLowerCase(Locale.ROOT)), (BlockEntityType<?>) field.get(null));
+				Registry.register(Registries.BLOCK_ENTITY_TYPE, MoreFurnaces.id(field.getName().toLowerCase(Locale.ROOT)), (BlockEntityType<?>) field.get(null));
 				PolymerBlockUtils.registerBlockEntity((BlockEntityType<?>) field.get(null));
 			} catch (Throwable ignored) {
-				LOGGER.error("Failed to register block entity type: {}", field.getName());
+                MoreFurnaces.LOGGER.error("Failed to register block entity type: {}", field.getName());
 			}
 		}
 
 		for (Field field : Items.class.getFields()) {
             try {
 				if (field.get(null) instanceof Item item) {
-					Identifier id = id(field.getName().toLowerCase(Locale.ROOT));
-					if (item instanceof GenericBlockItem b) {
+					Identifier id = MoreFurnaces.id(field.getName().toLowerCase(Locale.ROOT));
+					if (item instanceof MoreFurnacesContent b) {
 						if (b.getIdentifier().equals(id)) {
 							Registry.register(Registries.ITEM, id, item);
 						}
@@ -78,22 +79,27 @@ public class MoreFurnaces implements ModInitializer {
 					entries.add(Items.GOLD_FURNACE);
 					entries.add(Items.DIAMOND_FURNACE);
 					entries.add(Items.NETHERITE_FURNACE);
+					entries.add(Items.DOUBLE_FURNACE_MODULE);
+					entries.add(Items.HALF_FURNACE_MODULE);
 				}).build());
 
         MoreFurnaces.LOGGER.info("MoreFurnaces loaded!");
 	}
 	public static class Blocks {
-		public static Block IRON_FURNACE = new CustomFurnaceBlock(id("iron_furnace"), 2, BlockSoundGroup.METAL);
-		public static Block GOLD_FURNACE = new CustomFurnaceBlock(id("gold_furnace"), 3, BlockSoundGroup.METAL);
-		public static Block DIAMOND_FURNACE = new CustomFurnaceBlock(id("diamond_furnace"), 4, BlockSoundGroup.METAL);
-		public static Block NETHERITE_FURNACE = new CustomFurnaceBlock(id("netherite_furnace"), 6, BlockSoundGroup.NETHERITE);
+		public static Block IRON_FURNACE = new CustomFurnaceBlock(MoreFurnaces.id("iron_furnace"), 2, BlockSoundGroup.METAL);
+		public static Block GOLD_FURNACE = new CustomFurnaceBlock(MoreFurnaces.id("gold_furnace"), 3, BlockSoundGroup.METAL);
+		public static Block DIAMOND_FURNACE = new CustomFurnaceBlock(MoreFurnaces.id("diamond_furnace"), 4, BlockSoundGroup.METAL);
+		public static Block NETHERITE_FURNACE = new CustomFurnaceBlock(MoreFurnaces.id("netherite_furnace"), 6, BlockSoundGroup.NETHERITE);
 	}
 
 	public static class Items {
-		public static BlockItem IRON_FURNACE = new GenericBlockItem(id("iron_furnace"), Blocks.IRON_FURNACE, Rarity.COMMON);
-		public static BlockItem GOLD_FURNACE = new GenericBlockItem(id("gold_furnace"), Blocks.GOLD_FURNACE, Rarity.COMMON);
-		public static BlockItem DIAMOND_FURNACE = new GenericBlockItem(id("diamond_furnace"), Blocks.DIAMOND_FURNACE, Rarity.COMMON);
-		public static BlockItem NETHERITE_FURNACE = new GenericBlockItem(id("netherite_furnace"), Blocks.NETHERITE_FURNACE, Rarity.COMMON);
+		public static BlockItem IRON_FURNACE = new GenericBlockItem(MoreFurnaces.id("iron_furnace"), Blocks.IRON_FURNACE);
+		public static BlockItem GOLD_FURNACE = new GenericBlockItem(MoreFurnaces.id("gold_furnace"), Blocks.GOLD_FURNACE);
+		public static BlockItem DIAMOND_FURNACE = new GenericBlockItem(MoreFurnaces.id("diamond_furnace"), Blocks.DIAMOND_FURNACE);
+		public static BlockItem NETHERITE_FURNACE = new GenericBlockItem(MoreFurnaces.id("netherite_furnace"), Blocks.NETHERITE_FURNACE);
+
+		public static Item DOUBLE_FURNACE_MODULE = new FurnaceModuleItem(MoreFurnaces.id("double_furnace_module"), FurnaceModule.DOUBLE_SPEED_AND_FUEL);
+		public static Item HALF_FURNACE_MODULE = new FurnaceModuleItem(MoreFurnaces.id("half_furnace_module"), FurnaceModule.HALF_SPEED_AND_FUEL);
 	}
 
 	public static class BlockEntities {

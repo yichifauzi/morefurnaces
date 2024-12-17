@@ -4,10 +4,7 @@ import eu.pb4.polymer.blocks.api.BlockModelType;
 import eu.pb4.polymer.blocks.api.PolymerBlockModel;
 import eu.pb4.polymer.blocks.api.PolymerBlockResourceUtils;
 import eu.pb4.polymer.blocks.api.PolymerTexturedBlock;
-import net.minecraft.block.Block;
-import net.minecraft.block.BlockState;
-import net.minecraft.block.Blocks;
-import net.minecraft.block.FurnaceBlock;
+import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
@@ -84,14 +81,14 @@ public class CustomFurnaceBlock extends FurnaceBlock implements PolymerTexturedB
             World world, BlockEntityType<T> givenType, BlockEntityType<? extends CustomFurnaceBlockEntity> expectedType
     ) {
         return world instanceof ServerWorld serverWorld
-                ? validateTicker(givenType, expectedType, (worldx, pos, state, blockEntity) -> CustomFurnaceBlockEntity.tick(serverWorld, pos, state, blockEntity))
+                ? BlockWithEntity.validateTicker(givenType, expectedType, (unused, pos, state, blockEntity) -> CustomFurnaceBlockEntity.tick(serverWorld, pos, state, blockEntity))
                 : null;
     }
 
     @Nullable
     @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
-        return validateTicker2(world, type, MoreFurnaces.BlockEntities.CUSTOM_FURNACE_ENTITY);
+        return CustomFurnaceBlock.validateTicker2(world, type, MoreFurnaces.BlockEntities.CUSTOM_FURNACE_ENTITY);
     }
 
     @Override
@@ -107,20 +104,20 @@ public class CustomFurnaceBlock extends FurnaceBlock implements PolymerTexturedB
 
     @Override
     public BlockState getPolymerBlockState(BlockState state, PacketContext context) {
-        if (state.get(FACING) == Direction.NORTH) {
-            if (state.get(LIT)) return this.baseStateNorthLit;
+        if (state.get(AbstractFurnaceBlock.FACING) == Direction.NORTH) {
+            if (state.get(AbstractFurnaceBlock.LIT)) return this.baseStateNorthLit;
             return this.baseStateNorth;
         }
-        if (state.get(FACING) == Direction.EAST) {
-            if (state.get(LIT)) return this.baseStateEastLit;
+        if (state.get(AbstractFurnaceBlock.FACING) == Direction.EAST) {
+            if (state.get(AbstractFurnaceBlock.LIT)) return this.baseStateEastLit;
             return this.baseStateEast;
         }
-        if (state.get(FACING) == Direction.SOUTH) {
-            if (state.get(LIT)) return this.baseStateSouthLit;
+        if (state.get(AbstractFurnaceBlock.FACING) == Direction.SOUTH) {
+            if (state.get(AbstractFurnaceBlock.LIT)) return this.baseStateSouthLit;
             return this.baseStateSouth;
         }
-        if (state.get(FACING) == Direction.WEST) {
-            if (state.get(LIT)) return this.baseStateWestLit;
+        if (state.get(AbstractFurnaceBlock.FACING) == Direction.WEST) {
+            if (state.get(AbstractFurnaceBlock.LIT)) return this.baseStateWestLit;
             return this.baseStateWest;
         }
 
@@ -144,4 +141,15 @@ public class CustomFurnaceBlock extends FurnaceBlock implements PolymerTexturedB
             player.incrementStat(Stats.INTERACT_WITH_FURNACE);
         }
     }
+    @Override
+    public BlockState onBreak(World world, BlockPos pos, BlockState state, PlayerEntity player) {
+        if (world.getBlockEntity(pos) instanceof CustomFurnaceBlockEntity ent) {
+            if (!world.isClient()) {
+                player.giveOrDropStack(ent.getModule().getItemStack());
+                ent.killItemDisplay();
+            }
+        }
+        return super.onBreak(world, pos, state, player);
+    }
+
 }

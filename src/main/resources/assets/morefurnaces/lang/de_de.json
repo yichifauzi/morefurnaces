@@ -2,5 +2,12 @@
   "block.morefurnaces.iron_furnace": "Eisenofen",
   "block.morefurnaces.gold_furnace": "Goldofen",
   "block.morefurnaces.diamond_furnace": "Diamantofen",
-  "block.morefurnaces.netherite_furnace": "Netheritofen"
+  "block.morefurnaces.netherite_furnace": "Netheritofen",
+
+  "item.morefurnaces.double_furnace_module": "Geschwindigkeitsofenmodul",
+  "item.morefurnaces.double_furnace_module.description": "Verdoppelt die Geschwindigkeit, jedoch auch den Verbrauch.",
+  "item.morefurnaces.half_furnace_module": "Effizienzofenmodul",
+  "item.morefurnaces.half_furnace_module.description": "Halbiert den Verbrauch, auf Kosten der Geschwindigkeit.",
+  "item.morefurnaces.furnace_module.invalid": "Ofen enthält bereits ein Modul!",
+  "item.morefurnaces.furnace_module.success": "Modul installiert!"
 }
