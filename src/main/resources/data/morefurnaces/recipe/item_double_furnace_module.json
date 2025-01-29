@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "GRG",
+    "FDF",
+    "GRG"
+  ],
+  "key": {
+    "G": "minecraft:gold_ingot",
+    "R": "minecraft:redstone",
+    "D": "minecraft:diamond",
+    "F": "minecraft:blast_furnace"
+  },
+  "result": {
+    "id": "morefurnaces:double_furnace_module",
+    "count": 1
+  }
+}

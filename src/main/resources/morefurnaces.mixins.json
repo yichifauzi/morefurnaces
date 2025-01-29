@@ -3,6 +3,7 @@
   "package": "pw.smto.morefurnaces.mixin",
   "compatibilityLevel": "JAVA_21",
   "mixins": [
+    "FurnaceOutputSlotMixin"
   ],
   "injectors": {
     "defaultRequire": 1

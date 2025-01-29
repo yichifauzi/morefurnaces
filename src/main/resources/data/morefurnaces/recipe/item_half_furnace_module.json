@@ -1,0 +1,18 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "CRC",
+    "FDF",
+    "CRC"
+  ],
+  "key": {
+    "C": "minecraft:coal",
+    "R": "minecraft:redstone",
+    "D": "minecraft:diamond",
+    "F": "minecraft:blast_furnace"
+  },
+  "result": {
+    "id": "morefurnaces:half_furnace_module",
+    "count": 1
+  }
+}

@@ -64,6 +64,7 @@ public class CustomFurnaceBlockEntity extends LockableContainerBlockEntity imple
     int cookTimeTotal;
 
     private DisplayEntity.ItemDisplayEntity moduleDisplay = null;
+    private Vec3d moduleDisplayPosition = null;
 
     protected final PropertyDelegate propertyDelegate = new PropertyDelegate() {
         @Override
@@ -178,7 +179,21 @@ public class CustomFurnaceBlockEntity extends LockableContainerBlockEntity imple
     }
 
     private void ensureItemDisplayExistence(ServerWorld world, BlockPos pos) {
+        if (this.moduleDisplayPosition == null) {
+            this.moduleDisplayPosition = this.calculateModuleDisplayPosition(world.getBlockState(pos).get(AbstractFurnaceBlock.FACING));
+        }
+
         if (this.moduleDisplay == null && this.installedModule != FurnaceModule.NO_MODULE) {
+            var entities = world.getEntitiesByClass(
+                    DisplayEntity.ItemDisplayEntity.class,
+                    new Box(
+                            this.moduleDisplayPosition.add(-0.01, -0.01, -0.01),
+                            this.moduleDisplayPosition.add(0.01, 0.01, 0.01)
+                    ), e -> true);
+            if (!entities.isEmpty()) {
+                this.moduleDisplay = entities.getFirst();
+                return;
+            }
             var state = world.getBlockState(pos);
             var d = state.get(AbstractFurnaceBlock.FACING);
 
@@ -186,27 +201,37 @@ public class CustomFurnaceBlockEntity extends LockableContainerBlockEntity imple
             this.moduleDisplay.setItemStack(this.installedModule.getItemStack());
             this.moduleDisplay.setTransformation(new AffineTransformation(
                     null,
-                    AffineTransformations.DIRECTION_ROTATIONS.get(d).getLeftRotation(),
+                    AffineTransformations.DIRECTION_ROTATIONS.get(d.getOpposite()).getLeftRotation(),
                     new Vector3f(0.1f,0.1f,1.0f),
                     null
             ));
             this.moduleDisplay.setBrightness(Brightness.FULL);
             this.moduleDisplay.setShadowRadius(0.0f);
             this.moduleDisplay.setShadowStrength(0.0f);
-            this.moduleDisplay.setPosition(pos.toCenterPos().offset(d, 0.5).add(0,0.44,0).offset(getLeftDirection(d), 0.44));
+            this.moduleDisplay.setPosition(this.moduleDisplayPosition);
             this.moduleDisplay.setTransformationMode(ModelTransformationMode.GUI);
             world.spawnEntity(this.moduleDisplay);
         }
     }
 
+    private Vec3d calculateModuleDisplayPosition(Direction d) {
+        return this.pos.toCenterPos().offset(d, 0.5).add(0,0.44,0).offset(this.getLeftDirection(d), 0.44);
+    }
+
     public void killItemDisplay() {
-        if (this.moduleDisplay != null) this.moduleDisplay.discard();
+        if (this.getWorld() instanceof ServerWorld w && this.moduleDisplayPosition != null) {
+            w.getEntitiesByClass(
+                    DisplayEntity.ItemDisplayEntity.class,
+                    new Box(
+                            this.moduleDisplayPosition.add(-0.01, -0.01, -0.01),
+                            this.moduleDisplayPosition.add(0.01, 0.01, 0.01)
+                    ), e -> true).forEach(Entity::discard);
+        }
     }
 
     @Override
     public void markRemoved() {
         this.killItemDisplay();
-        if (this.getWorld() instanceof ServerWorld w) w.getEntitiesByClass(DisplayEntity.ItemDisplayEntity.class, new Box(this.getPos().toCenterPos().add(-0.1, -0.1, -0.1), this.getPos().toCenterPos().add(0.1, 0.1, 0.1)), e -> true).forEach(Entity::discard);
         super.markRemoved();
     }
 
@@ -359,15 +384,15 @@ public class CustomFurnaceBlockEntity extends LockableContainerBlockEntity imple
     }
 
     private static boolean craftRecipe(
-            DynamicRegistryManager dynamicRegisryManager,
+            DynamicRegistryManager dynamicRegistryManager,
             @Nullable RecipeEntry<? extends AbstractCookingRecipe> recipe,
             SingleStackRecipeInput input,
             DefaultedList<ItemStack> inventory,
             int maxCount
     ) {
-        if (recipe != null && CustomFurnaceBlockEntity.canAcceptRecipeOutput(dynamicRegisryManager, recipe, input, inventory, maxCount)) {
+        if (recipe != null && CustomFurnaceBlockEntity.canAcceptRecipeOutput(dynamicRegistryManager, recipe, input, inventory, maxCount)) {
             ItemStack itemStack = inventory.get(0);
-            ItemStack itemStack2 = recipe.value().craft(input, dynamicRegisryManager);
+            ItemStack itemStack2 = recipe.value().craft(input, dynamicRegistryManager);
             ItemStack itemStack3 = inventory.get(2);
             if (itemStack3.isEmpty()) {
                 inventory.set(2, itemStack2.copy());
