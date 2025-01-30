@@ -1,0 +1,6 @@
+{
+    "model": {
+        "type": "minecraft:model",
+        "model": "morefurnaces:item/gold_furnace"
+    }
+}

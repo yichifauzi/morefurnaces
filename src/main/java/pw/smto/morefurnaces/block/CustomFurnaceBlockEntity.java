@@ -260,7 +260,7 @@ public class CustomFurnaceBlockEntity extends LockableContainerBlockEntity imple
                                 d + i, e + j, f + k,
                                 10,
                                 world.getRegistryKey(),
-                                new ParticleS2CPacket(ParticleTypes.SMOKE, false, d + i, e + j, f + k, 0, 0, 0, 0.0f, 1)
+                                new ParticleS2CPacket(ParticleTypes.SMOKE, false, false, d + i, e + j, f + k, 0, 0, 0, 0.0f, 1)
                         );
                 SimpleParticleType particle = ParticleTypes.FLAME;
                 if (t.speedMultiplier == 6) particle = ParticleTypes.SOUL_FIRE_FLAME;
@@ -270,7 +270,7 @@ public class CustomFurnaceBlockEntity extends LockableContainerBlockEntity imple
                                 d + i, e + j, f + k,
                                 10,
                                 world.getRegistryKey(),
-                                new ParticleS2CPacket(particle, false, d + i, e + j, f + k, 0, 0, 0, 0.0f, 1)
+                                new ParticleS2CPacket(particle, false,false, d + i, e + j, f + k, 0, 0, 0, 0.0f, 1)
                         );
             }
         }

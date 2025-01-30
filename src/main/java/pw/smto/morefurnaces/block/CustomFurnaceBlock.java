@@ -96,12 +96,6 @@ public class CustomFurnaceBlock extends FurnaceBlock implements PolymerTexturedB
         return new CustomFurnaceBlockEntity(pos, state, this.translationKey, this.speedMultiplier);
     }
 
-
-    @Override
-    public ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state) {
-        return new ItemStack(Registries.BLOCK.get(this.id));
-    }
-
     @Override
     public BlockState getPolymerBlockState(BlockState state, PacketContext context) {
         if (state.get(AbstractFurnaceBlock.FACING) == Direction.NORTH) {
@@ -131,6 +125,11 @@ public class CustomFurnaceBlock extends FurnaceBlock implements PolymerTexturedB
     @Override
     public BlockSoundGroup getSoundGroup(BlockState state) {
         return this.sound;
+    }
+
+    @Override
+    protected ItemStack getPickStack(WorldView world, BlockPos pos, BlockState state, boolean includeData) {
+        return new ItemStack(Registries.BLOCK.get(this.id));
     }
 
     @Override
